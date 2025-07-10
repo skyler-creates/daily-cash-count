@@ -3,16 +3,19 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Closing Shift Cash Counter</title>
+  <title>Closing Shift Cash Count</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
   <style>
     body {
-      font-family: 'Segoe UI', sans-serif;
+      body {
+      font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
       margin: 0;
       padding: 20px;
       background: #f7faff;
       color: #222;
       max-width: 600px;
-      margin: auto;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     h2 {
@@ -21,16 +24,18 @@
       margin-bottom: 30px;
     }
 
-    .bill-row {
-      margin-bottom: 12px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+.bill-row {
+  margin-bottom: 12px;
+  display: flex;
+  justify-content: flex-start;  /* changed from space-between */
+  align-items: center;
+  gap: 12px; /* small gap between label and input */
+}
 
-    label {
-      font-size: 1.1rem;
-    }
+label {
+  font-size: 1.1rem;
+  min-width: 60px; /* fixed width so all labels align */
+}
 
     input[type="number"] {
       width: 80px;
@@ -90,20 +95,19 @@
   </style>
 </head>
 <body>
-  <h2>💵 Closing Shift Counter</h2>
+  <h2>Closing Shift Counter</h2>
 
   <div id="bills">
-    <div class="bill-row">5¢ × <input type="number" id="c5" value="0" min="0" /></div>
-    <div class="bill-row">10¢ × <input type="number" id="c10" value="0" min="0" /></div>    
-    <div class="bill-row">25¢ × <input type="number" id="c25" value="0" min="0" /></div>
-    <div class="bill-row">$1 × <input type="number" id="b1" value="0" min="0" /></div>
-    <div class="bill-row">$2 × <input type="number" id="b2" value="0" min="0" /></div>
-    <div class="bill-row">$5 × <input type="number" id="b5" value="0" min="0" /></div>
-    <div class="bill-row">$10 × <input type="number" id="b10" value="0" min="0" /></div>
-    <div class="bill-row">$20 × <input type="number" id="b20" value="0" min="0" /></div>
-    <div class="bill-row">$50 × <input type="number" id="b50" value="0" min="0" /></div>
-    <div class="bill-row">$100 × <input type="number" id="b50" value="0" min="0" /></div>
-
+    <div class="bill-row"><label>5¢ ×</label><input type="number" id="c5" value="0" /></div>
+    <div class="bill-row"><label>10¢ ×</label><input type="number" id="c10" value="0" /></div>
+    <div class="bill-row"><label>25¢ ×</label><input type="number" id="c25" value="0" /></div>
+    <div class="bill-row"><label>$1 ×</label><input type="number" id="b1" value="0" /></div>
+    <div class="bill-row"><label>$2 ×</label><input type="number" id="b2" value="0" /></div>
+    <div class="bill-row"><label>$5 ×</label><input type="number" id="b5" value="0" /></div>
+    <div class="bill-row"><label>$10 ×</label><input type="number" id="b10" value="0" /></div>
+    <div class="bill-row"><label>$20 ×</label><input type="number" id="b20" value="0" /></div>
+    <div class="bill-row"><label>$50 ×</label><input type="number" id="b50" value="0" /></div>
+    <div class="bill-row"><label>$100 ×</label><input type="number" id="b100" value="0" /></div>
   </div>
 
   <div id="float-input">
@@ -111,7 +115,7 @@
     <input type="number" id="float" value="300" />
   </div>
 
-  <button onclick="calculate()">🧮 Calculate</button>
+  <button onclick="calculate()">Calculate</button>
 
   <div id="results">
     <p id="total"></p>
@@ -145,7 +149,7 @@
     }
 
     function getBreakdown(amount) {
-      const bills = [100, 50, 20, 10, 5, 2, 1];
+      const bills = [1, 2, 5, 10, 20, 50, 100]; // Small to big bills only, coins separate
       let remaining = parseFloat(amount);
       let result = "<strong>Suggested Breakdown:</strong><br>";
 
@@ -167,4 +171,6 @@
   </script>
 </body>
 </html>
+
+
 
