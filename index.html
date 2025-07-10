@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Closing Shift Cash Count</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
   <style>
     body {
-      font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+      font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       margin: 0;
       padding: 20px;
       background: #f7faff;
@@ -62,10 +62,19 @@
       border-radius: 8px;
       margin-top: 20px;
       cursor: pointer;
+      transition: background-color 0.3s ease;
     }
 
     button:hover {
       background-color: #2f6dc2;
+    }
+
+    #resetBtn {
+      background-color: #888;
+      margin-top: 10px;
+    }
+    #resetBtn:hover {
+      background-color: #666;
     }
 
     #results {
@@ -74,6 +83,7 @@
       padding: 20px;
       border-radius: 10px;
       box-shadow: 0 0 10px rgba(0,0,0,0.05);
+      line-height: 1.4;
     }
 
     #results p {
@@ -123,38 +133,41 @@
   <h2>Closing Shift Cash Count</h2>
 
   <div style="text-align: center; margin-bottom: 20px;">
-    <button id="darkModeToggle" style="font-size: 1.4rem; background: none; border: none; cursor: pointer;">🌙</button>
+    <button id="darkModeToggle" aria-label="Toggle dark mode" style="font-size: 1.4rem; background: none; border: none; cursor: pointer;">🌙</button>
   </div>
 
   <div id="bills">
-    <div class="bill-row"><label>5¢ ×</label><input type="number" id="c5" value="0" /></div>
-    <div class="bill-row"><label>10¢ ×</label><input type="number" id="c10" value="0" /></div>
-    <div class="bill-row"><label>25¢ ×</label><input type="number" id="c25" value="0" /></div>
-    <div class="bill-row"><label>$1 ×</label><input type="number" id="b1" value="0" /></div>
-    <div class="bill-row"><label>$2 ×</label><input type="number" id="b2" value="0" /></div>
-    <div class="bill-row"><label>$5 ×</label><input type="number" id="b5" value="0" /></div>
-    <div class="bill-row"><label>$10 ×</label><input type="number" id="b10" value="0" /></div>
-    <div class="bill-row"><label>$20 ×</label><input type="number" id="b20" value="0" /></div>
-    <div class="bill-row"><label>$50 ×</label><input type="number" id="b50" value="0" /></div>
-    <div class="bill-row"><label>$100 ×</label><input type="number" id="b100" value="0" /></div>
+    <div class="bill-row"><label>5¢ ×</label><input type="number" id="c5" min="0" value="0" /></div>
+    <div class="bill-row"><label>10¢ ×</label><input type="number" id="c10" min="0" value="0" /></div>
+    <div class="bill-row"><label>25¢ ×</label><input type="number" id="c25" min="0" value="0" /></div>
+    <div class="bill-row"><label>$1 ×</label><input type="number" id="b1" min="0" value="0" /></div>
+    <div class="bill-row"><label>$2 ×</label><input type="number" id="b2" min="0" value="0" /></div>
+    <div class="bill-row"><label>$5 ×</label><input type="number" id="b5" min="0" value="0" /></div>
+    <div class="bill-row"><label>$10 ×</label><input type="number" id="b10" min="0" value="0" /></div>
+    <div class="bill-row"><label>$20 ×</label><input type="number" id="b20" min="0" value="0" /></div>
+    <div class="bill-row"><label>$50 ×</label><input type="number" id="b50" min="0" value="0" /></div>
+    <div class="bill-row"><label>$100 ×</label><input type="number" id="b100" min="0" value="0" /></div>
   </div>
 
   <div id="float-input">
     <label>Float: $</label>
-    <input type="number" id="float" value="300" />
+    <input type="number" id="float" min="0" value="300" />
   </div>
 
-  <button onclick="calculate()">Calculate</button>
-  <button onclick="resetForm()" style="margin-top: 10px; background-color: #888;">Reset</button>
+  <button id="calcBtn">Calculate</button>
+  <button id="resetBtn">Reset</button>
 
   <div id="results">
     <p id="total"></p>
-    <p id="deposit"></p>
+    <p id="cashOut"></p>
     <p id="breakdown"></p>
   </div>
 
   <script>
     const darkModeToggle = document.getElementById('darkModeToggle');
+    const calcBtn = document.getElementById('calcBtn');
+    const resetBtn = document.getElementById('resetBtn');
+
     darkModeToggle.addEventListener('click', () => {
       document.body.classList.toggle('dark-mode');
       if (document.body.classList.contains('dark-mode')) {
@@ -163,6 +176,9 @@
         darkModeToggle.textContent = '🌙';
       }
     });
+
+    calcBtn.addEventListener('click', calculate);
+    resetBtn.addEventListener('click', resetForm);
 
     function calculate() {
       const values = {
@@ -179,17 +195,16 @@
 
       total = parseFloat(total.toFixed(2));
       const floatAmt = parseFloat(document.getElementById("float").value) || 0;
-      const deposit = parseFloat((total - floatAmt).toFixed(2));
+      const cashOut = parseFloat((total - floatAmt).toFixed(2));
 
       document.getElementById("total").textContent = `Total Cash: $${total.toFixed(2)}`;
-      document.getElementById("deposit").textContent = `Deposit = $${total.toFixed(2)} - $${floatAmt.toFixed(2)} = $${deposit.toFixed(2)}`;
+      document.getElementById("cashOut").textContent = `Cash to take out = $${total.toFixed(2)} - $${floatAmt.toFixed(2)} = $${cashOut.toFixed(2)}`;
 
-      const breakdown = getBreakdown(deposit);
+      const breakdown = getBreakdown(cashOut);
       document.getElementById("breakdown").innerHTML = breakdown;
     }
 
     function getBreakdown(amount) {
-      // Available bills/coins from inputs
       const available = {
         b100: parseInt(document.getElementById('b100').value) || 0,
         b50: parseInt(document.getElementById('b50').value) || 0,
@@ -203,7 +218,6 @@
         c5: parseInt(document.getElementById('c5').value) || 0,
       };
 
-      // Bill/coin values in descending order
       const bills = [
         { id: 'b100', value: 100 },
         { id: 'b50', value: 50 },
@@ -223,7 +237,6 @@
       let remaining = parseFloat(amount);
       let result = "<strong>Suggested Breakdown:</strong><br>";
 
-      // Use bills first
       for (const bill of bills) {
         const maxNeeded = Math.floor(remaining / bill.value);
         const useCount = Math.min(maxNeeded, available[bill.id]);
@@ -234,7 +247,6 @@
         }
       }
 
-      // Then coins
       for (const coin of coins) {
         const maxNeeded = Math.floor(remaining / coin.value);
         const useCount = Math.min(maxNeeded, available[coin.id]);
@@ -245,7 +257,6 @@
         }
       }
 
-      // If something remains (like pennies), show remainder
       if (remaining > 0) {
         result += `Remaining: $${remaining.toFixed(2)} (not enough bills/coins)`;
       }
@@ -257,14 +268,13 @@
       const inputs = document.querySelectorAll('input[type="number"]');
       inputs.forEach(input => {
         if(input.id === 'float') {
-          input.value = 300; // reset float to default 300
+          input.value = 300;
         } else {
           input.value = 0;
         }
       });
-
       document.getElementById("total").textContent = '';
-      document.getElementById("deposit").textContent = '';
+      document.getElementById("cashOut").textContent = '';
       document.getElementById("breakdown").textContent = '';
     }
   </script>
