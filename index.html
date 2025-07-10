@@ -24,6 +24,13 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      font-size: 1.6rem;
+    }
+
+    @media (max-width: 480px) {
+      h2 {
+        font-size: 1.3rem;
+      }
     }
 
     .bill-row {
@@ -143,8 +150,9 @@
 
     #modalDifference {
       font-weight: bold;
-      font-size: 1.4rem;
+      font-size: 1.05rem;
       color: #3a7bd5;
+      margin: 10px 0;
     }
 
     #modalBreakdownTitle {
@@ -162,6 +170,11 @@
       font-size: 0.9rem;
       color: #333;
       white-space: pre-line;
+      margin-bottom: 0;
+    }
+
+    #resultModalContent.dark-mode #modalBreakdown {
+      color: #ddd;
     }
 
     body.dark-mode {
@@ -343,5 +356,4 @@
   </script>
 </body>
 </html>
-
 
