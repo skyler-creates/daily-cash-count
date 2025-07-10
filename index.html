@@ -7,7 +7,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
   <style>
     body {
-      body {
       font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
       margin: 0;
       padding: 20px;
@@ -24,18 +23,18 @@
       margin-bottom: 30px;
     }
 
-.bill-row {
-  margin-bottom: 12px;
-  display: flex;
-  justify-content: flex-start;  /* changed from space-between */
-  align-items: center;
-  gap: 12px; /* small gap between label and input */
-}
+    .bill-row {
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      gap: 12px;
+    }
 
-label {
-  font-size: 1.1rem;
-  min-width: 60px; /* fixed width so all labels align */
-}
+    label {
+      font-size: 1.1rem;
+      min-width: 60px;
+    }
 
     input[type="number"] {
       width: 80px;
@@ -82,38 +81,37 @@ label {
       font-size: 1.1rem;
     }
 
+    /* Dark mode styles */
+    body.dark-mode {
+      background-color: #121212;
+      color: #e0e0e0;
+    }
+
+    body.dark-mode input[type="number"] {
+      background-color: #222;
+      color: #e0e0e0;
+      border: 1px solid #555;
+    }
+
+    body.dark-mode button {
+      background-color: #2979ff;
+      color: #fff;
+    }
+
+    body.dark-mode button:hover {
+      background-color: #5393ff;
+    }
+
+    body.dark-mode #results {
+      background-color: #1e1e1e;
+      box-shadow: none;
+    }
+
     @media (max-width: 480px) {
       input[type="number"] {
         width: 60px;
         font-size: 1rem;
       }
-       /* Dark mode styles */
-      body.dark-mode {
-  background-color: #121212;
-  color: #e0e0e0;
-}
-
-body.dark-mode input[type="number"] {
-  background-color: #222;
-  color: #e0e0e0;
-  border: 1px solid #555;
-}
-
-body.dark-mode button {
-  background-color: #2979ff;
-  color: #fff;
-}
-
-body.dark-mode button:hover {
-  background-color: #5393ff;
-}
-
-body.dark-mode #results {
-  background-color: #1e1e1e;
-  box-shadow: none;
-}
-
-
 
       label {
         font-size: 1rem;
@@ -125,8 +123,8 @@ body.dark-mode #results {
   <h2>Closing Shift Cash Count</h2>
 
   <div style="text-align: center; margin-bottom: 20px;">
-  <button id="darkModeToggle" style="font-size: 1.4rem; background: none; border: none; cursor: pointer;">🌙</button>
-</div>
+    <button id="darkModeToggle" style="font-size: 1.4rem; background: none; border: none; cursor: pointer;">🌙</button>
+  </div>
 
   <div id="bills">
     <div class="bill-row"><label>5¢ ×</label><input type="number" id="c5" value="0" /></div>
@@ -149,7 +147,6 @@ body.dark-mode #results {
   <button onclick="calculate()">Calculate</button>
   <button onclick="resetForm()" style="margin-top: 10px; background-color: #888;">Reset</button>
 
-
   <div id="results">
     <p id="total"></p>
     <p id="deposit"></p>
@@ -158,14 +155,14 @@ body.dark-mode #results {
 
   <script>
     const darkModeToggle = document.getElementById('darkModeToggle');
-darkModeToggle.addEventListener('click', () => {
-  document.body.classList.toggle('dark-mode');
-  if (document.body.classList.contains('dark-mode')) {
-    darkModeToggle.textContent = '☀️';
-  } else {
-    darkModeToggle.textContent = '🌙';
-  }
-});
+    darkModeToggle.addEventListener('click', () => {
+      document.body.classList.toggle('dark-mode');
+      if (document.body.classList.contains('dark-mode')) {
+        darkModeToggle.textContent = '☀️';
+      } else {
+        darkModeToggle.textContent = '🌙';
+      }
+    });
 
     function calculate() {
       const values = {
@@ -191,88 +188,85 @@ darkModeToggle.addEventListener('click', () => {
       document.getElementById("breakdown").innerHTML = breakdown;
     }
 
-function getBreakdown(amount) {
-  // Available bills/coins from inputs
-  const available = {
-    b100: parseInt(document.getElementById('b100').value) || 0,
-    b50: parseInt(document.getElementById('b50').value) || 0,
-    b20: parseInt(document.getElementById('b20').value) || 0,
-    b10: parseInt(document.getElementById('b10').value) || 0,
-    b5: parseInt(document.getElementById('b5').value) || 0,
-    b2: parseInt(document.getElementById('b2').value) || 0,
-    b1: parseInt(document.getElementById('b1').value) || 0,
-    c25: parseInt(document.getElementById('c25').value) || 0,
-    c10: parseInt(document.getElementById('c10').value) || 0,
-    c5: parseInt(document.getElementById('c5').value) || 0,
-  };
-function resetForm() {
-  const inputs = document.querySelectorAll('input[type="number"]');
-  inputs.forEach(input => {
-    if(input.id === 'float') {
-      input.value = 300; // reset float to default 300
-    } else {
-      input.value = 0;
+    function getBreakdown(amount) {
+      // Available bills/coins from inputs
+      const available = {
+        b100: parseInt(document.getElementById('b100').value) || 0,
+        b50: parseInt(document.getElementById('b50').value) || 0,
+        b20: parseInt(document.getElementById('b20').value) || 0,
+        b10: parseInt(document.getElementById('b10').value) || 0,
+        b5: parseInt(document.getElementById('b5').value) || 0,
+        b2: parseInt(document.getElementById('b2').value) || 0,
+        b1: parseInt(document.getElementById('b1').value) || 0,
+        c25: parseInt(document.getElementById('c25').value) || 0,
+        c10: parseInt(document.getElementById('c10').value) || 0,
+        c5: parseInt(document.getElementById('c5').value) || 0,
+      };
+
+      // Bill/coin values in descending order
+      const bills = [
+        { id: 'b100', value: 100 },
+        { id: 'b50', value: 50 },
+        { id: 'b20', value: 20 },
+        { id: 'b10', value: 10 },
+        { id: 'b5', value: 5 },
+        { id: 'b2', value: 2 },
+        { id: 'b1', value: 1 }
+      ];
+
+      const coins = [
+        { id: 'c25', value: 0.25 },
+        { id: 'c10', value: 0.10 },
+        { id: 'c5', value: 0.05 }
+      ];
+
+      let remaining = parseFloat(amount);
+      let result = "<strong>Suggested Breakdown:</strong><br>";
+
+      // Use bills first
+      for (const bill of bills) {
+        const maxNeeded = Math.floor(remaining / bill.value);
+        const useCount = Math.min(maxNeeded, available[bill.id]);
+        if (useCount > 0) {
+          result += `$${bill.value} × ${useCount}<br>`;
+          remaining -= useCount * bill.value;
+          remaining = parseFloat(remaining.toFixed(2));
+        }
+      }
+
+      // Then coins
+      for (const coin of coins) {
+        const maxNeeded = Math.floor(remaining / coin.value);
+        const useCount = Math.min(maxNeeded, available[coin.id]);
+        if (useCount > 0) {
+          result += `${coin.value * 100}¢ × ${useCount}<br>`;
+          remaining -= useCount * coin.value;
+          remaining = parseFloat(remaining.toFixed(2));
+        }
+      }
+
+      // If something remains (like pennies), show remainder
+      if (remaining > 0) {
+        result += `Remaining: $${remaining.toFixed(2)} (not enough bills/coins)`;
+      }
+
+      return result;
     }
-  });
 
-  document.getElementById("total").textContent = '';
-  document.getElementById("deposit").textContent = '';
-  document.getElementById("breakdown").textContent = '';
-}
+    function resetForm() {
+      const inputs = document.querySelectorAll('input[type="number"]');
+      inputs.forEach(input => {
+        if(input.id === 'float') {
+          input.value = 300; // reset float to default 300
+        } else {
+          input.value = 0;
+        }
+      });
 
-  // Bill/coin values in descending order
-  const bills = [
-    { id: 'b100', value: 100 },
-    { id: 'b50', value: 50 },
-    { id: 'b20', value: 20 },
-    { id: 'b10', value: 10 },
-    { id: 'b5', value: 5 },
-    { id: 'b2', value: 2 },
-    { id: 'b1', value: 1 }
-  ];
-
-  const coins = [
-    { id: 'c25', value: 0.25 },
-    { id: 'c10', value: 0.10 },
-    { id: 'c5', value: 0.05 }
-  ];
-
-  let remaining = parseFloat(amount);
-  let result = "<strong>Suggested Breakdown:</strong><br>";
-
-  // Use bills first
-  for (const bill of bills) {
-    const maxNeeded = Math.floor(remaining / bill.value);
-    const useCount = Math.min(maxNeeded, available[bill.id]);
-    if (useCount > 0) {
-      result += `$${bill.value} × ${useCount}<br>`;
-      remaining -= useCount * bill.value;
-      remaining = parseFloat(remaining.toFixed(2));
+      document.getElementById("total").textContent = '';
+      document.getElementById("deposit").textContent = '';
+      document.getElementById("breakdown").textContent = '';
     }
-  }
-
-  // Then coins
-  for (const coin of coins) {
-    const maxNeeded = Math.floor(remaining / coin.value);
-    const useCount = Math.min(maxNeeded, available[coin.id]);
-    if (useCount > 0) {
-      result += `${coin.value * 100}¢ × ${useCount}<br>`;
-      remaining -= useCount * coin.value;
-      remaining = parseFloat(remaining.toFixed(2));
-    }
-  }
-
-  // If something remains (like pennies), show remainder
-  if (remaining > 0) {
-    result += `Remaining: $${remaining.toFixed(2)} (not enough bills/coins)`;
-  }
-
-  return result;
-}
-
   </script>
 </body>
 </html>
-
-
-
