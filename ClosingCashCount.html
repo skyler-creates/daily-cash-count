@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Closing Shift Cash Count</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      max-width: 500px;
+      margin: auto;
+      background: #f9f9f9;
+      color: #333;
+    }
+    h2 {
+      text-align: center;
+    }
+    .bill-row {
+      margin-bottom: 10px;
+    }
+    input[type="number"] {
+      width: 60px;
+      padding: 5px;
+      font-size: 16px;
+    }
+    button {
+      margin-top: 15px;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    #result p {
+      font-size: 18px;
+      margin: 5px 0;
+    }
+    strong {
+      color: #007bff;
+    }
+  </style>
+</head>
+<body>
+  <h2>Closing Shift Money Count</h2>
+  <div id="bills">
+    <div class="bill-row">$100 × <input type="number" id="b100" value="0" min="0" /></div>
+    <div class="bill-row">$50 × <input type="number" id="b50" value="0" min="0" /></div>
+    <div class="bill-row">$20 × <input type="number" id="b20" value="0" min="0" /></div>
+    <div class="bill-row">$10 × <input type="number" id="b10" value="0" min="0" /></div>
+    <div class="bill-row">$5 × <input type="number" id="b5" value="0" min="0" /></div>
+    <div class="bill-row">$2 × <input type="number" id="b2" value="0" min="0" /></div>
+    <div class="bill-row">$1 × <input type="number" id="b1" value="0" min="0" /></div>
+    <div class="bill-row">25¢ × <input type="number" id="c25" value="0" min="0" /></div>
+    <div class="bill-row">10¢ × <input type="number" id="c10" value="0" min="0" /></div>
+    <div class="bill-row">5¢ × <input type="number" id="c5" value="0" min="0" /></div>
+  </div>
+  <div style="margin-top:20px;">
+    Float: $<input type="number" id="float" value="300" min="0" />
+  </div>
+  <button onclick="calculate()">Calculate</button>
+  <div id="result" style="margin-top:20px;">
+    <p id="total"></p>
+    <p id="deposit"></p>
+    <p id="breakdown"></p>
+  </div>
+
+  <script>
+    function calculate() {
+      const values = {
+        b100: 100,
+        b50: 50,
+        b20: 20,
+        b10: 10,
+        b5: 5,
+        b2: 2,
+        b1: 1,
+        c25: 0.25,
+        c10: 0.1,
+        c5: 0.05,
+      };
+      let total = 0;
+      for (const id in values) {
+        const qty = parseInt(document.getElementById(id).value) || 0;
+        total += qty * values[id];
+      }
+      total = parseFloat(total.toFixed(2));
+      const floatAmt = parseFloat(document.getElementById("float").value) || 0;
+      const deposit = parseFloat((total - floatAmt).toFixed(2));
+
+      document.getElementById("total").textContent = `Total Cash: $${total}`;
+      document.getElementById("deposit").textContent = `Deposit = $${total} - $${floatAmt} = $${deposit}`;
+
+      const breakdown = getBreakdown(deposit);
+      document.getElementById("breakdown").innerHTML = breakdown;
+    }
+
+    function getBreakdown(amount) {
+      const bills = [100, 50, 20, 10, 5, 2, 1];
+      let remaining = amount;
+      let result = "<strong>Suggested Breakdown:</strong><br>";
+      for (const bill of bills) {
+        const count = Math.floor(remaining / bill);
+        if (count > 0) {
+          result += `$${bill} × ${count}<br>`;
+          remaining -= count * bill;
+        }
+      }
+      return result + (remaining > 0 ? `Coins: $${remaining.toFixed(2)}` : '');
+    }
+  </script>
+</body>
+</html>
