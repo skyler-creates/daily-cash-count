@@ -57,6 +57,16 @@
       -moz-appearance: textfield;
     }
 
+    /* Small explanation text */
+    .explain-text {
+      font-size: 0.85rem;
+      color: #555;
+      margin-top: 0;
+      margin-bottom: 10px;
+      max-width: 300px;
+      line-height: 1.2;
+    }
+
     /* Dividers */
     .section-divider {
       border-top: 2px solid #3a7bd5;
@@ -181,10 +191,14 @@
     <div class="bill-row"><span>$20</span><input type="number" id="b20" min="0" step="1" /></div>
     <div class="bill-row"><span>$50</span><input type="number" id="b50" min="0" step="1" /></div>
     <div class="bill-row"><span>$100</span><input type="number" id="b100" min="0" step="1" /></div>
-    <div class="bill-row"><span>Float</span><input type="number" id="float" min="0" step="1" /></div>
-  </div>
+    <div class="bill-row"><span>Others</span><input type="number" id="others" min="0" step="1" /></div>
+    <p class="explain-text">Amount for unopened coin packets (e.g., $10 for five $2 coins)</p>
 
-  <div class="section-divider"></div>
+    <div class="section-divider"></div>
+
+    <div class="bill-row"><span>Float</span><input type="number" id="float" min="0" step="1" value="300" /></div>
+    <p class="explain-text">Starting cash in register (default $300)</p>
+  </div>
 
   <div id="registerCashSection">
     <div class="bill-row"><span>Registered Cash In</span><input type="number" id="cashIn" min="0" step="1" /></div>
@@ -225,17 +239,15 @@
       resultModal.style.display = 'none';
     });
 
-    // Close modal if click outside content
     window.addEventListener('click', e => {
       if (e.target === resultModal) {
         resultModal.style.display = 'none';
       }
     });
 
-    // Validate all inputs are filled (no empty)
     function validateInputs() {
       const ids = [
-        'c5','c10','c25','b1','b2','b5','b10','b20','b50','b100','float','cashIn','cashOut'
+        'c5','c10','c25','b1','b2','b5','b10','b20','b50','b100','others','float','cashIn','cashOut'
       ];
       for (const id of ids) {
         const input = document.getElementById(id);
@@ -263,6 +275,10 @@
         total += qty * values[id];
       }
 
+      // Add Others input amount to total
+      const othersAmt = parseInt(document.getElementById('others').value);
+      total += othersAmt;
+
       total = parseFloat(total.toFixed(2));
       const floatAmt = parseInt(document.getElementById("float").value);
       const deposit = parseFloat((total - floatAmt).toFixed(2));
@@ -283,17 +299,17 @@
       resultModal.style.display = 'flex';
     }
 
-    // Attach event listener to calculate button
     document.getElementById('calculateBtn').addEventListener('click', calculate);
 
-    // Reset inputs
     function resetForm() {
       const inputs = document.querySelectorAll('input[type="number"]');
-      inputs.forEach(input => input.value = '');
+      inputs.forEach(input => {
+        if (input.id === 'float') input.value = 300;
+        else input.value = '';
+      });
     }
     document.getElementById('resetBtn').addEventListener('click', resetForm);
 
-    // Breakdown function unchanged
     function getBreakdown(amount) {
       const available = {
         b100: +document.getElementById('b100').value,
