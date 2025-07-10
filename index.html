@@ -87,6 +87,33 @@ label {
         width: 60px;
         font-size: 1rem;
       }
+       /* Dark mode styles */
+      body.dark-mode {
+  background-color: #121212;
+  color: #e0e0e0;
+}
+
+body.dark-mode input[type="number"] {
+  background-color: #222;
+  color: #e0e0e0;
+  border: 1px solid #555;
+}
+
+body.dark-mode button {
+  background-color: #2979ff;
+  color: #fff;
+}
+
+body.dark-mode button:hover {
+  background-color: #5393ff;
+}
+
+body.dark-mode #results {
+  background-color: #1e1e1e;
+  box-shadow: none;
+}
+
+
 
       label {
         font-size: 1rem;
@@ -95,7 +122,11 @@ label {
   </style>
 </head>
 <body>
-  <h2>Closing Shift Counter</h2>
+  <h2>Closing Shift Cash Count</h2>
+
+  <div style="text-align: center; margin-bottom: 20px;">
+  <button id="darkModeToggle" style="font-size: 1.4rem; background: none; border: none; cursor: pointer;">🌙</button>
+</div>
 
   <div id="bills">
     <div class="bill-row"><label>5¢ ×</label><input type="number" id="c5" value="0" /></div>
@@ -116,6 +147,8 @@ label {
   </div>
 
   <button onclick="calculate()">Calculate</button>
+  <button onclick="resetForm()" style="margin-top: 10px; background-color: #888;">Reset</button>
+
 
   <div id="results">
     <p id="total"></p>
@@ -124,6 +157,16 @@ label {
   </div>
 
   <script>
+    const darkModeToggle = document.getElementById('darkModeToggle');
+darkModeToggle.addEventListener('click', () => {
+  document.body.classList.toggle('dark-mode');
+  if (document.body.classList.contains('dark-mode')) {
+    darkModeToggle.textContent = '☀️';
+  } else {
+    darkModeToggle.textContent = '🌙';
+  }
+});
+
     function calculate() {
       const values = {
         b100: 100, b50: 50, b20: 20, b10: 10,
@@ -162,6 +205,20 @@ function getBreakdown(amount) {
     c10: parseInt(document.getElementById('c10').value) || 0,
     c5: parseInt(document.getElementById('c5').value) || 0,
   };
+function resetForm() {
+  const inputs = document.querySelectorAll('input[type="number"]');
+  inputs.forEach(input => {
+    if(input.id === 'float') {
+      input.value = 300; // reset float to default 300
+    } else {
+      input.value = 0;
+    }
+  });
+
+  document.getElementById("total").textContent = '';
+  document.getElementById("deposit").textContent = '';
+  document.getElementById("breakdown").textContent = '';
+}
 
   // Bill/coin values in descending order
   const bills = [
