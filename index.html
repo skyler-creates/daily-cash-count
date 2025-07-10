@@ -73,37 +73,71 @@
         b2: 2,
         b1: 1,
         c25: 0.25,
-        c10: 0.1,
+        c10: 0.10,
         c5: 0.05,
       };
+
+      // Gather input quantities
+      const quantities = {};
+      for (const id in values) {
+        quantities[id] = parseInt(document.getElementById(id).value) || 0;
+      }
+
+      // Calculate total cash
       let total = 0;
       for (const id in values) {
-        const qty = parseInt(document.getElementById(id).value) || 0;
-        total += qty * values[id];
+        total += quantities[id] * values[id];
       }
       total = parseFloat(total.toFixed(2));
+
       const floatAmt = parseFloat(document.getElementById("float").value) || 0;
       const deposit = parseFloat((total - floatAmt).toFixed(2));
 
       document.getElementById("total").textContent = `Total Cash: $${total}`;
       document.getElementById("deposit").textContent = `Deposit = $${total} - $${floatAmt} = $${deposit}`;
 
-      const breakdown = getBreakdown(deposit);
+      const breakdown = getBreakdown(deposit, quantities, values);
       document.getElementById("breakdown").innerHTML = breakdown;
     }
 
-    function getBreakdown(amount) {
-      const bills = [100, 50, 20, 10, 5, 2, 1];
+    // Breakdown only uses bills/coins up to quantities inputted
+    function getBreakdown(amount, quantities, values) {
+      const billOrder = ["b100", "b50", "b20", "b10", "b5", "b2", "b1"];
+      const coinOrder = ["c25", "c10", "c5"];
+
       let remaining = amount;
       let result = "<strong>Suggested Breakdown:</strong><br>";
-      for (const bill of bills) {
-        const count = Math.floor(remaining / bill);
-        if (count > 0) {
-          result += `$${bill} × ${count}<br>`;
-          remaining -= count * bill;
+
+      // Use bills respecting quantity limits
+      for (const id of billOrder) {
+        const billValue = values[id];
+        const maxQty = quantities[id];
+        const useQty = Math.min(Math.floor(remaining / billValue), maxQty);
+        if (useQty > 0) {
+          result += `$${billValue} × ${useQty}<br>`;
+          remaining -= useQty * billValue;
+          remaining = parseFloat(remaining.toFixed(2));
         }
       }
-      return result + (remaining > 0 ? `Coins: $${remaining.toFixed(2)}` : '');
+
+      // Use coins respecting quantity limits
+      for (const id of coinOrder) {
+        const coinValue = values[id];
+        const maxQty = quantities[id];
+        const useQty = Math.min(Math.floor(remaining / coinValue), maxQty);
+        if (useQty > 0) {
+          result += `${coinValue * 100}¢ × ${useQty}<br>`;
+          remaining -= useQty * coinValue;
+          remaining = parseFloat(remaining.toFixed(2));
+        }
+      }
+
+      // If leftover amount can’t be covered by bills/coins input
+      if (remaining > 0.009) {
+        result += `<em>Remaining not covered by available bills/coins: $${remaining.toFixed(2)}</em>`;
+      }
+
+      return result;
     }
   </script>
 </body>
