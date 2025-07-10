@@ -153,6 +153,7 @@
 
     #modalDifference {
       font-weight: bold;
+      /* keep color same as text, no blue */
     }
 
     #modalBreakdownTitle {
@@ -299,12 +300,15 @@
       const cashIn = parseFloat(document.getElementById("cashIn").value) || 0;
       const cashOut = parseFloat(document.getElementById("cashOut").value) || 0;
       const recorded = parseFloat((cashIn - cashOut).toFixed(2));
-      const difference = parseFloat((total - recorded).toFixed(2));
+      const differenceValue = deposit - recorded;
+
+      // Format difference with + or - sign
+      const differenceFormatted = (differenceValue >= 0 ? '+' : '') + '$' + differenceValue.toFixed(2);
 
       document.getElementById("modalTotal").textContent = `Total Counted: $${total.toFixed(2)}`;
       document.getElementById("modalTakeOut").textContent = `Cash to Take Out: $${deposit.toFixed(2)}`;
       document.getElementById("modalRegistered").textContent = `Recorded Cash: $${recorded.toFixed(2)}`;
-      document.getElementById("modalDifference").textContent = `$${difference.toFixed(2)}`;
+      document.getElementById("modalDifference").textContent = differenceFormatted;
       document.getElementById("modalBreakdown").innerHTML = getBreakdown(deposit);
 
       modal.style.display = 'flex';
@@ -356,3 +360,4 @@
   </script>
 </body>
 </html>
+
