@@ -47,10 +47,21 @@
       -moz-appearance: textfield;
     }
 
-    input::-webkit-outer-spin-button,
-    input::-webkit-inner-spin-button {
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
       -webkit-appearance: none;
       margin: 0;
+    }
+
+    /* Prevent decimals */
+    input[type="number"] {
+      -moz-appearance:textfield;
+    }
+
+    /* Dividers */
+    .section-divider {
+      border-top: 2px solid #3a7bd5;
+      margin: 20px 0;
     }
 
     .button-row {
@@ -92,6 +103,7 @@
       font-size: 1.1rem;
     }
 
+    /* Dark Mode */
     body.dark-mode {
       background-color: #121212;
       color: #e0e0e0;
@@ -130,17 +142,25 @@
   </h2>
 
   <div id="bills">
-    <div class="bill-row"><span>5¢</span><input type="number" id="c5" value="0" /></div>
-    <div class="bill-row"><span>10¢</span><input type="number" id="c10" value="0" /></div>
-    <div class="bill-row"><span>25¢</span><input type="number" id="c25" value="0" /></div>
-    <div class="bill-row"><span>$1</span><input type="number" id="b1" value="0" /></div>
-    <div class="bill-row"><span>$2</span><input type="number" id="b2" value="0" /></div>
-    <div class="bill-row"><span>$5</span><input type="number" id="b5" value="0" /></div>
-    <div class="bill-row"><span>$10</span><input type="number" id="b10" value="0" /></div>
-    <div class="bill-row"><span>$20</span><input type="number" id="b20" value="0" /></div>
-    <div class="bill-row"><span>$50</span><input type="number" id="b50" value="0" /></div>
-    <div class="bill-row"><span>$100</span><input type="number" id="b100" value="0" /></div>
-    <div class="bill-row"><span>Float</span><input type="number" id="float" value="300" /></div>
+    <div class="bill-row"><span>5¢</span><input type="number" id="c5" value="0" min="0" step="1" /></div>
+    <div class="bill-row"><span>10¢</span><input type="number" id="c10" value="0" min="0" step="1" /></div>
+    <div class="bill-row"><span>25¢</span><input type="number" id="c25" value="0" min="0" step="1" /></div>
+    <div class="bill-row"><span>$1</span><input type="number" id="b1" value="0" min="0" step="1" /></div>
+    <div class="bill-row"><span>$2</span><input type="number" id="b2" value="0" min="0" step="1" /></div>
+    <div class="bill-row"><span>$5</span><input type="number" id="b5" value="0" min="0" step="1" /></div>
+    <div class="bill-row"><span>$10</span><input type="number" id="b10" value="0" min="0" step="1" /></div>
+    <div class="bill-row"><span>$20</span><input type="number" id="b20" value="0" min="0" step="1" /></div>
+    <div class="bill-row"><span>$50</span><input type="number" id="b50" value="0" min="0" step="1" /></div>
+    <div class="bill-row"><span>$100</span><input type="number" id="b100" value="0" min="0" step="1" /></div>
+    <div class="bill-row"><span>Float</span><input type="number" id="float" value="300" min="0" step="1" /></div>
+  </div>
+
+  <!-- Registered Cash In/Out moved above buttons -->
+  <div class="section-divider"></div>
+
+  <div id="registerCashSection">
+    <div class="bill-row"><span>Registered Cash In</span><input type="number" id="cashIn" value="0" min="0" step="1" /></div>
+    <div class="bill-row"><span>Registered Cash Out</span><input type="number" id="cashOut" value="0" min="0" step="1" /></div>
   </div>
 
   <div class="button-row">
@@ -151,9 +171,11 @@
   <div id="results">
     <p id="total"></p>
     <p id="deposit"></p>
+
+    <div class="section-divider"></div>
+
     <p id="breakdown"></p>
-    <div class="bill-row"><span>Cash In</span><input type="number" id="cashIn" value="0" /></div>
-    <div class="bill-row"><span>Cash Out</span><input type="number" id="cashOut" value="0" /></div>
+
     <p id="registerDiff"></p>
   </div>
 
@@ -186,8 +208,8 @@
       document.getElementById("breakdown").innerHTML = getBreakdown(deposit);
 
       // Register machine calculation
-      const cashIn = parseFloat(document.getElementById("cashIn").value) || 0;
-      const cashOut = parseFloat(document.getElementById("cashOut").value) || 0;
+      const cashIn = parseInt(document.getElementById("cashIn").value) || 0;
+      const cashOut = parseInt(document.getElementById("cashOut").value) || 0;
       const register = parseFloat((cashIn - cashOut).toFixed(2));
       const difference = parseFloat((total - register).toFixed(2));
 
