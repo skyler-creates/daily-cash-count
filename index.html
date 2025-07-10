@@ -53,11 +53,6 @@
       margin: 0;
     }
 
-    input[type="number"] {
-      -moz-appearance: textfield;
-    }
-
-    /* Small explanation text */
     .explain-text {
       font-size: 0.85rem;
       color: #555;
@@ -67,7 +62,6 @@
       line-height: 1.2;
     }
 
-    /* Dividers */
     .section-divider {
       border-top: 2px solid #3a7bd5;
       margin: 20px 0;
@@ -99,7 +93,7 @@
       color: white;
     }
 
-    /* Modal styles */
+    /* Modal */
     #resultModal {
       display: none;
       position: fixed;
@@ -120,8 +114,6 @@
       border-radius: 12px;
       box-shadow: 0 2px 10px rgba(0,0,0,0.3);
       color: #222;
-      font-size: 1.2rem;
-      line-height: 1.4;
       position: relative;
       text-align: left;
     }
@@ -129,12 +121,6 @@
     #resultModalContent.dark-mode {
       background: #1e1e1e;
       color: #e0e0e0;
-    }
-
-    #resultModalContent strong {
-      font-weight: 700;
-      font-size: 1.4rem;
-      color: #3a7bd5;
     }
 
     #modalCloseBtn {
@@ -148,20 +134,36 @@
       color: inherit;
     }
 
+    #modalTotal,
+    #modalTakeOut,
+    #modalRegistered {
+      font-size: 1.05rem;
+      margin: 10px 0;
+    }
+
+    #modalDifference {
+      font-weight: bold;
+      font-size: 1.4rem;
+      color: #3a7bd5;
+    }
+
     #modalBreakdownTitle {
-      font-size: 0.9rem;
+      font-size: 1rem;
       margin-top: 20px;
       margin-bottom: 6px;
-      color: #555;
+      color: #666;
+    }
+
+    #resultModalContent.dark-mode #modalBreakdownTitle {
+      color: #cccccc;
     }
 
     #modalBreakdown {
-      font-size: 0.85rem;
+      font-size: 0.9rem;
       color: #333;
       white-space: pre-line;
     }
 
-    /* Dark Mode */
     body.dark-mode {
       background-color: #121212;
       color: #e0e0e0;
@@ -195,52 +197,48 @@
   </h2>
 
   <div id="bills">
-    <div class="bill-row"><span>5¢</span><input type="number" id="c5" min="0" step="1" /></div>
-    <div class="bill-row"><span>10¢</span><input type="number" id="c10" min="0" step="1" /></div>
-    <div class="bill-row"><span>25¢</span><input type="number" id="c25" min="0" step="1" /></div>
-    <div class="bill-row"><span>$1</span><input type="number" id="b1" min="0" step="1" /></div>
-    <div class="bill-row"><span>$2</span><input type="number" id="b2" min="0" step="1" /></div>
-    <div class="bill-row"><span>$5</span><input type="number" id="b5" min="0" step="1" /></div>
-    <div class="bill-row"><span>$10</span><input type="number" id="b10" min="0" step="1" /></div>
-    <div class="bill-row"><span>$20</span><input type="number" id="b20" min="0" step="1" /></div>
-    <div class="bill-row"><span>$50</span><input type="number" id="b50" min="0" step="1" /></div>
-    <div class="bill-row"><span>$100</span><input type="number" id="b100" min="0" step="1" /></div>
-    <div class="bill-row"><span>Others</span><input type="number" id="others" min="0" step="1" /></div>
+    <div class="bill-row"><span>5¢</span><input type="number" id="c5" /></div>
+    <div class="bill-row"><span>10¢</span><input type="number" id="c10" /></div>
+    <div class="bill-row"><span>25¢</span><input type="number" id="c25" /></div>
+    <div class="bill-row"><span>$1</span><input type="number" id="b1" /></div>
+    <div class="bill-row"><span>$2</span><input type="number" id="b2" /></div>
+    <div class="bill-row"><span>$5</span><input type="number" id="b5" /></div>
+    <div class="bill-row"><span>$10</span><input type="number" id="b10" /></div>
+    <div class="bill-row"><span>$20</span><input type="number" id="b20" /></div>
+    <div class="bill-row"><span>$50</span><input type="number" id="b50" /></div>
+    <div class="bill-row"><span>$100</span><input type="number" id="b100" /></div>
+    <div class="bill-row"><span>Others</span><input type="number" id="others" /></div>
     <p class="explain-text">Amount for unopened coin packets</p>
-
     <div class="section-divider"></div>
-
-    <div class="bill-row"><span>Float</span><input type="number" id="float" min="0" step="1" /></div>
+    <div class="bill-row"><span>Float</span><input type="number" id="float" /></div>
     <p class="explain-text">Starting cash in register</p>
   </div>
 
-  <div id="registerCashSection">
-    <div class="bill-row"><span>Registered Cash In</span><input type="number" id="cashIn" min="0" step="1" /></div>
-    <div class="bill-row"><span>Registered Cash Out</span><input type="number" id="cashOut" min="0" step="1" /></div>
-  </div>
+  <div class="bill-row"><span>Recorded Cash In</span><input type="number" id="cashIn" /></div>
+  <div class="bill-row"><span>Recorded Cash Out</span><input type="number" id="cashOut" /></div>
 
   <div class="button-row">
     <button id="calculateBtn">Calculate</button>
     <button id="resetBtn">Reset</button>
   </div>
 
-  <!-- Modal for results -->
-  <div id="resultModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <!-- Modal -->
+  <div id="resultModal">
     <div id="resultModalContent">
-      <button id="modalCloseBtn" aria-label="Close results">&times;</button>
-      <h3 id="modalTitle">Closing Shift Summary</h3>
-      <p id="modalTotal"></p>
-      <p id="modalTakeOut"></p>
-      <p id="modalRegistered"></p>
+      <button id="modalCloseBtn">&times;</button>
+      <h3>Closing Shift Summary</h3>
+      <p id="modalTotal">Total Counted: </p>
+      <p id="modalTakeOut">Cash to Take Out: </p>
+      <p id="modalRegistered">Recorded Cash: </p>
       <p><strong>Difference: <span id="modalDifference"></span></strong></p>
-      <p id="modalBreakdownTitle">Suggested Take Out Cash</p>
+      <p id="modalBreakdownTitle">Suggested Cash Breakdown</p>
       <div id="modalBreakdown"></div>
     </div>
   </div>
 
   <script>
     const darkModeToggle = document.getElementById('darkModeToggle');
-    const resultModal = document.getElementById('resultModal');
+    const modal = document.getElementById('resultModal');
     const modalContent = document.getElementById('resultModalContent');
     const modalCloseBtn = document.getElementById('modalCloseBtn');
 
@@ -250,25 +248,16 @@
       darkModeToggle.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
     });
 
-    modalCloseBtn.addEventListener('click', () => {
-      resultModal.style.display = 'none';
-    });
-
-    window.addEventListener('click', e => {
-      if (e.target === resultModal) {
-        resultModal.style.display = 'none';
-      }
-    });
+    modalCloseBtn.addEventListener('click', () => modal.style.display = 'none');
+    window.addEventListener('click', e => { if (e.target === modal) modal.style.display = 'none'; });
 
     function validateInputs() {
-      const ids = [
-        'c5','c10','c25','b1','b2','b5','b10','b20','b50','b100','others','float','cashIn','cashOut'
-      ];
+      const ids = ['c5','c10','c25','b1','b2','b5','b10','b20','b50','b100','others','float','cashIn','cashOut'];
       for (const id of ids) {
-        const input = document.getElementById(id);
-        if (input.value === '') {
-          alert(`Please enter a value for ${input.previousElementSibling.textContent}`);
-          input.focus();
+        const el = document.getElementById(id);
+        if (el.value.trim() === '') {
+          alert(`Please enter a value for ${el.previousElementSibling.textContent}`);
+          el.focus();
           return false;
         }
       }
@@ -286,43 +275,31 @@
 
       let total = 0;
       for (const id in values) {
-        const qty = parseInt(document.getElementById(id).value);
-        total += qty * values[id];
+        total += (parseFloat(document.getElementById(id).value) || 0) * values[id];
       }
 
-      // Add Others input amount to total
-      const othersAmt = parseInt(document.getElementById('others').value);
-      total += othersAmt;
-
+      total += parseFloat(document.getElementById("others").value) || 0;
       total = parseFloat(total.toFixed(2));
-      const floatAmt = parseInt(document.getElementById("float").value);
+
+      const floatAmt = parseFloat(document.getElementById("float").value) || 0;
       const deposit = parseFloat((total - floatAmt).toFixed(2));
+      const cashIn = parseFloat(document.getElementById("cashIn").value) || 0;
+      const cashOut = parseFloat(document.getElementById("cashOut").value) || 0;
+      const recorded = parseFloat((cashIn - cashOut).toFixed(2));
+      const difference = parseFloat((total - recorded).toFixed(2));
 
-      const cashIn = parseInt(document.getElementById("cashIn").value);
-      const cashOut = parseInt(document.getElementById("cashOut").value);
-      const registered = parseFloat((cashIn - cashOut).toFixed(2));
-      const difference = parseFloat((total - registered).toFixed(2));
+      document.getElementById("modalTotal").textContent = `Total Counted: $${total.toFixed(2)}`;
+      document.getElementById("modalTakeOut").textContent = `Cash to Take Out: $${deposit.toFixed(2)}`;
+      document.getElementById("modalRegistered").textContent = `Recorded Cash: $${recorded.toFixed(2)}`;
+      document.getElementById("modalDifference").textContent = `$${difference.toFixed(2)}`;
+      document.getElementById("modalBreakdown").innerHTML = getBreakdown(deposit);
 
-      // Fill modal content (no equations, just final amounts)
-      document.getElementById('modalTotal').textContent = `Total Cash: $${total.toFixed(2)}`;
-      document.getElementById('modalTakeOut').textContent = `Cash to Take Out: $${deposit.toFixed(2)}`;
-      document.getElementById('modalRegistered').textContent = `Registered Cash: $${registered.toFixed(2)}`;
-      document.getElementById('modalDifference').textContent = `$${difference.toFixed(2)}`;
-      document.getElementById('modalBreakdown').innerHTML = getBreakdown(deposit);
-
-      // Show modal
-      resultModal.style.display = 'flex';
+      modal.style.display = 'flex';
     }
-
-    document.getElementById('calculateBtn').addEventListener('click', calculate);
 
     function resetForm() {
-      const inputs = document.querySelectorAll('input[type="number"]');
-      inputs.forEach(input => {
-        input.value = '';
-      });
+      document.querySelectorAll('input[type="number"]').forEach(el => el.value = '');
     }
-    document.getElementById('resetBtn').addEventListener('click', resetForm);
 
     function getBreakdown(amount) {
       const available = {
@@ -335,45 +312,36 @@
         b1: +document.getElementById('b1').value,
         c25: +document.getElementById('c25').value,
         c10: +document.getElementById('c10').value,
-        c5: +document.getElementById('c5').value,
+        c5: +document.getElementById('c5').value
       };
 
-      const bills = [
+      const order = [
         { id: 'b100', value: 100 }, { id: 'b50', value: 50 },
         { id: 'b20', value: 20 }, { id: 'b10', value: 10 },
         { id: 'b5', value: 5 }, { id: 'b2', value: 2 },
-        { id: 'b1', value: 1 }
-      ];
-
-      const coins = [
-        { id: 'c25', value: 0.25 }, { id: 'c10', value: 0.10 },
-        { id: 'c5', value: 0.05 }
+        { id: 'b1', value: 1 }, { id: 'c25', value: 0.25 },
+        { id: 'c10', value: 0.10 }, { id: 'c5', value: 0.05 }
       ];
 
       let remaining = amount;
       let result = "";
 
-      for (const bill of bills) {
-        const count = Math.min(Math.floor(remaining / bill.value), available[bill.id]);
+      for (const item of order) {
+        const count = Math.min(Math.floor(remaining / item.value), available[item.id]);
         if (count > 0) {
-          result += `$${bill.value} × ${count}<br>`;
-          remaining -= count * bill.value;
+          result += (item.value >= 1 ? `$${item.value}` : `${item.value * 100}¢`) + ` × ${count}<br>`;
+          remaining -= count * item.value;
           remaining = parseFloat(remaining.toFixed(2));
         }
       }
 
-      for (const coin of coins) {
-        const count = Math.min(Math.floor(remaining / coin.value), available[coin.id]);
-        if (count > 0) {
-          result += `${coin.value * 100}¢ × ${count}<br>`;
-          remaining -= count * coin.value;
-          remaining = parseFloat(remaining.toFixed(2));
-        }
-      }
-
-      return result || "(No bills/coins suggested)";
+      return result || "(No breakdown available)";
     }
+
+    document.getElementById("calculateBtn").addEventListener("click", calculate);
+    document.getElementById("resetBtn").addEventListener("click", resetForm);
   </script>
 </body>
 </html>
+
 
